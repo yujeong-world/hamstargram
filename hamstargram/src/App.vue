@@ -30,22 +30,22 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <h4>안녕 {{$store.state.name}}</h4>
-  <h4>나이 {{$store.state.age}}</h4>
-  <button type="button" @click="$event =>$store.state.name = '박' ">버튼</button>
-  <button @click="changeName">이름바꾸기버튼</button>
-  <button @click="$event =>$store.commit('나이더하기', 10)">나이바꾸기버튼</button>
-  <button @click="$event => $store.dispatch('getData')">더보기(디스패치)</button>
-  <h4>메소드 함수 시간표현{{now()}}</h4>
-  <h4>컴퓨티드 시간표현{{now2}}</h4>
-  <h4>이름 넣기 함수 {{name}}</h4>
-  <p>{{카운터}}</p>
-  <button @click="$event => 카운터++">카운터</button>
+
+  <!--<h4>안녕 {{$store.state.name}}</h4>
+  <h4>나이증가 {{$store.state.age}}</h4>
+  <button @click="$store.commit('이름변경')">이름바꾸기</button>
+  <button @click="$store.commit('나이더하기')">나이 1씩증가</button>
+  <p>{{$store.state.more}}</p>
+  <button @click="$store.dispatch('getData')">더보기버튼</button>
+
+  <p>{{now()}} {{카운터}}</p>
+  <p>{{now2}} {{카운터}}</p> computed는 ()소괄호 안씀 
+  <button @click="카운터++">버튼</button>-->
 
 
   <Container @write="작성한글=$event" :게시물="게시물" :step="step" :이미지="이미지" :filterSelect="filterSelect"/>
-  <button @click="more">더보기</button>
-  <button @click="moreHamzzi">햄스터사진더보기</button>
+  <!-- <button @click="more">더보기</button>
+  <button @click="moreHamzzi">햄스터사진더보기</button> -->
 
   <div class="footer">
     <ul class="footer-button-plus">
@@ -53,7 +53,7 @@
       <label for="file" class="input-plus">+</label>
     </ul>
  </div>
-
+<!-- <p>{{age}}{{name}}</p> -->
 <!-- <div v-if="step==0">내용0</div>
 <div v-if="step==1">내용1</div>
 <div v-if="step==2">내용2</div>
@@ -66,6 +66,7 @@
 import Container from './components/Container.vue';
 import InstaDate from './assets/instaData';
 import axios from 'axios'; //axios라이브러리를 aiax로 요청하기 위해 설치
+import {mapMutations, mapState} from 'vuex'
 
 
 export default {
@@ -73,7 +74,7 @@ export default {
   data() {
     return {
       작성한글:'',
-      step:0, //현재 상태를 보이게
+      step:3, //현재 상태를 보이게
       게시물 :InstaDate,
       더보기 : 0,
       햄찌더보기: 0,
@@ -87,8 +88,9 @@ export default {
     
   },
   methods: {
-    now(){
-      return new Date().toLocaleTimeString();
+    ...mapMutations(['setMore', '좋아요']),
+    now(){ //methods 함수는 사용할 때마다 실행됨
+      return new Date;
     },
     more(){
       axios.get(`https://codingapple1.github.io/vue/more${this.더보기}.json`)
@@ -144,14 +146,18 @@ export default {
     })
     // 'userFilter'이라는 이벤트를 발사하면 함수를 실행해주세요.a는 이벤트 발사할 때 들어있던 데이터를 의미함
   },
-  computed:{ //일종의 계산 결과를 저장하는 공간, 
-    now2(){
-      return new Date().toLocaleTimeString();
+  computed:{
+/*     now2(){ //computed는 뷰 파일이 처음 로드되었을 때 한번 실행하고 값을 간직함. 간직했던 값을 뱉어줌, 계산결과저장용 함수
+    //자원절약용으로...바뀌지 않는 것들을 저장.
+      return new Date;
+    } */
+    name(){ // 그냥 state 하나 꺼내 쓸 때도 computed 안에 사용하면 편할 수도
+      return this.$store.state.name //computed함수는 꼭 retrun을 사용해야 함..!!!
     },
-    name(){
-      return this.$store.state.name
-    }
-  }
+    //mapState함수는 vuex state를 한번에 꺼내 쓰기위한 함수
+    ...mapState(['name', 'age', 'likes']),
+
+  },
 }
 </script>
 

@@ -22,6 +22,9 @@
     <textarea @input="$emit('write', $event.target.value)" class="write-box">write!</textarea>
   </div>
 </div>
+<div v-if="step==3">
+<MyPage :one='1'></MyPage>
+</div>
 
   </section>
 </template>
@@ -29,6 +32,7 @@
 <script>
 import FilterBox from './FilterBox.vue'
 import Post from './Post.vue'
+import MyPage from './MyPage.vue'
 
 export default {
     name:'Container',
@@ -42,6 +46,7 @@ export default {
     components:{
         Post:Post,
         FilterBox,
+        MyPage
         
         
     },

@@ -5,7 +5,7 @@
             <div class="profile" :style="{backgroundImage : `url(${게시물.userImage})`}"></div>
             <span class="profile-name">{{게시물.name}}</span>
         </div>
-        <div @click="$event => $store.commit('likeIt')" class="post-body" :style="{backgroundImage : `url(${게시물.postImage})`}"  :class="게시물.filter"></div>
+        <div @click="$store.commit('좋아요')" class="post-body" :style="{backgroundImage : `url(${게시물.postImage})`}"  :class="게시물.filter"></div>
             <div class="post-content">
                 <p>{{$store.state.likes}}</p>
                 <p><strong>{{게시물.name}}</strong>{{게시물.content}}</p>
